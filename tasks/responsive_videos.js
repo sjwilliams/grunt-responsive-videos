@@ -2,6 +2,10 @@
  * grunt-responsive-videos
  * https://github.com/sjwilliams/grunt-responsive-videos
  *
+ * Based on the very handy grunt-responsive-images
+ * by andismith: https://github.com/andismith/grunt-responsive-images
+ * and ffmpeg-node by xonecase: https://github.com/xonecas/ffmpeg-node
+ * 
  * Copyright (c) 2013 Josh Williams
  * Licensed under the MIT license.
  */
@@ -19,9 +23,14 @@ module.exports = function(grunt) {
         separator: '-',
         sizes: [{
             name: 'small',
+            width: 320,
+            poster: false
+        },{
+            name: 'large',
             width: 640,
             poster: true
-        }],
+        }
+        ],
         encode:[{
             webm: [
                 {'-vcodec': 'libvpx'},
@@ -117,6 +126,7 @@ module.exports = function(grunt) {
 
             tally[sizeOptions.name] = 0;
 
+            console.log(sizeOptions);
 
             that.files.forEach(function(f) {
 
@@ -126,7 +136,19 @@ module.exports = function(grunt) {
                     dirName = path.dirname(f.dest),
                     dstPath = path.join(dirName, baseName + sizeOptions.name + '.mp4');
 
-                console.log(extName, srcPath, dirName, baseName, dstPath);
+                var encodeOptions = {};
+
+
+                // more than 1 source.
+                if (f.src.length > 1) {
+                    return grunt.fail.warn('Unable to resize more than one image in compact or files object format.\n'+ 'For multiple files please use the files array format.\nSee http://gruntjs.com/configuring-tasks');
+                }
+
+                // Make directory if it doesn't exist.
+                if (!grunt.file.isDir(dirName)) {
+                    grunt.file.mkdir(dirName);
+                }
+                console.log(f,extName, srcPath, dirName, baseName, dstPath);
 
                 // series.push(function(callback) {
                 //     im[sizingMethod](imageOptions, function(error, stdout, stderr) {
@@ -142,10 +164,15 @@ module.exports = function(grunt) {
 
                 // });
 
-                ffmpeg.exec(['-i', srcPath, '-vcodec', 'libx264', '-acodec', 'libfaac', '-pix_fmt', 'yuv420p', '-q:v', '4',  '-q:a', '100', '-threads', '0', dstPath], function() {
-                    done.apply();
-                });
+
+
+                // ffmpeg.exec(['-i', srcPath, '-vcodec', 'libx264', '-acodec', 'libfaac', '-pix_fmt', 'yuv420p', '-q:v', '4',  '-q:a', '100', '-threads', '0', dstPath], function() {
+                //     done.apply();
+                // });
             });
+
+             done.apply();
+
         });
     });
 };
