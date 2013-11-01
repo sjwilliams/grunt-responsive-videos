@@ -60,12 +60,12 @@ module.exports = function(grunt) {
 
     // check whether we've been given any valid size values
     function isValidSize(obj) {
-        return (_.isNumber(obj.width) || _.isNumber(obj.height));
+        return (_.isNumber(obj.width));
     }
 
 
     // create a name to suffix to our file.
-    function getName(name, width, height, separator, suffix) {
+    function getName(name, width, separator, suffix) {
 
         // handle empty separator as no separator
         if (typeof separator === 'undefined') {
@@ -80,11 +80,7 @@ module.exports = function(grunt) {
         if (name) {
             return separator + name + suffix;
         } else {
-            if (width && height) {
-                return separator + width + 'x' + height + suffix;
-            } else {
-                return separator + (width || height) + suffix;
-            }
+            return separator + width + suffix;
         }
     }
 
@@ -110,19 +106,13 @@ module.exports = function(grunt) {
 
             // variable
             var sizeOptions = _.clone(_.extend(DEFAULT_SIZE_OPTIONS, s));
-            var sizingMethod = 'resize';
 
             if (!isValidSize(s)) {
                 return grunt.fail.warn('Size is invalid');
             }
 
-            // use crop if both width and height are specified.
-            if (s.width && s.height) {
-                sizingMethod = 'crop';
-            }
-
             // create a name suffix for our image
-            sizeOptions.name = getName(s.name, s.width, s.height, options.separator, s.suffix);
+            sizeOptions.name = getName(s.name, s.width, options.separator, s.suffix);
 
             tally[sizeOptions.name] = 0;
 
@@ -134,7 +124,7 @@ module.exports = function(grunt) {
                     srcPath = f.src[0],
                     baseName = path.basename(srcPath, extName), // filename without extension
                     dirName = path.dirname(f.dest),
-                    dstPath = path.join(dirName, baseName + sizeOptions.name + '.mp4');
+                    dstPath = path.join(dirName, baseName + sizeOptions.name);
 
                 var encodeOptions = {};
 
