@@ -32,7 +32,10 @@
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.1",
+    "underscore": "~1.5.2",
+    "async": "~0.2.9",
+    "ffmpeg-node": "0.0.1"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
