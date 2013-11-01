@@ -31,7 +31,7 @@ module.exports = function(grunt) {
             poster: true
         }
         ],
-        encode:[{
+        encodes:[{
             webm: [
                 {'-vcodec': 'libvpx'},
                 {'-acodec': 'libvorbis'},
@@ -84,7 +84,7 @@ module.exports = function(grunt) {
         }
     }
 
-    grunt.registerMultiTask('responsive_videos', 'Videos at various resonsive sizes', function() {
+    grunt.registerMultiTask('responsive_videos', 'Videos at various responsive sizes', function() {
 
         // Merge task-specific and/or target-specific options with these defaults.
         var that = this;
@@ -97,72 +97,101 @@ module.exports = function(grunt) {
             return grunt.fail.warn('No sizes have been defined.');
         }
 
-        options.sizes.forEach(function(s) {
+        // build encode settings for each size
+        options.sizes.forEach(function(size) {
 
-            // consts
-            var DEFAULT_SIZE_OPTIONS = {
-                quality: 1
-            };
-
-            // variable
-            var sizeOptions = _.clone(_.extend(DEFAULT_SIZE_OPTIONS, s));
-
-            if (!isValidSize(s)) {
+            if (!isValidSize(size)) {
                 return grunt.fail.warn('Size is invalid');
             }
 
             // create a name suffix for our image
-            sizeOptions.name = getName(s.name, s.width, options.separator, s.suffix);
+            size.name = getName(size.name, size.width, options.separator, size.suffix);
 
-            tally[sizeOptions.name] = 0;
+            // track number of files per size
+            tally[size.name] = 0;
 
-            console.log(sizeOptions);
-
+            // build encode settings for each input file
             that.files.forEach(function(f) {
-
                 var extName = path.extname(f.dest),
                     srcPath = f.src[0],
                     baseName = path.basename(srcPath, extName), // filename without extension
                     dirName = path.dirname(f.dest),
-                    dstPath = path.join(dirName, baseName + sizeOptions.name);
+                    dstPath = path.join(dirName, baseName + size.name);
 
                 var encodeOptions = {};
 
-
                 // more than 1 source.
                 if (f.src.length > 1) {
-                    return grunt.fail.warn('Unable to resize more than one image in compact or files object format.\n'+ 'For multiple files please use the files array format.\nSee http://gruntjs.com/configuring-tasks');
+                    return grunt.fail.warn('Unable to encode more than one video in compact or files object format.\n' + 
+                        'For multiple files please use the files array format.\nSee http://gruntjs.com/configuring-tasks');
                 }
 
                 // Make directory if it doesn't exist.
                 if (!grunt.file.isDir(dirName)) {
                     grunt.file.mkdir(dirName);
                 }
-                console.log(f,extName, srcPath, dirName, baseName, dstPath);
-
-                // series.push(function(callback) {
-                //     im[sizingMethod](imageOptions, function(error, stdout, stderr) {
-                //         if (error) {
-                //             grunt.fail.warn(error.message);
-                //         } else {
-                //             grunt.verbose.ok('Responsive Image: ' + srcPath + ' now ' + dstPath);
-                //             tally[sizeOptions.name]++;
-                //         }
-                //         return callback();
-                //     });
-
-
-                // });
+                
+                // console.log(f,extName, srcPath, dirName, baseName, dstPath);
 
 
 
-                // ffmpeg.exec(['-i', srcPath, '-vcodec', 'libx264', '-acodec', 'libfaac', '-pix_fmt', 'yuv420p', '-q:v', '4',  '-q:a', '100', '-threads', '0', dstPath], function() {
-                //     done.apply();
-                // });
+                // build encode settings for each output encode type
+                options.encodes.forEach(function(encodeSettings){
+                    _.each(encodeSettings, function(codecSettings, codecName){
+                        var outPath = dstPath + '.' + codecName;
+
+                        // build up flags array ffmpeg-node expects.
+                        // ex: ['-i', srcPath, '-vcodec', 'libx264', '-acodec', 'libfaac', '-pix_fmt', 'yuv420p', '-q:v', '4',  '-q:a', '100', '-threads', '0', dstPath]
+                        var flags = [];
+
+                        // input file first
+                        flags.push('-i', srcPath);
+
+                        // encode settings next
+                        _.each(codecSettings, function(codecSetting){
+                            for (var key in codecSetting){
+                                flags.push(key,codecSetting[key]);
+                            }
+                        });
+
+                        // output file
+                        flags.push(outPath);
+
+                        // console.log(flags);
+
+                        tally[size.name]++;
+
+                        // queue encode jobs
+                        series.push(function(callback){
+                            // ffmpeg.exec(['-i', srcPath, '-vcodec', 'libx264', '-acodec', 'libfaac', '-pix_fmt', 'yuv420p', '-q:v', '4',  '-q:a', '100', '-threads', '0', dstPath], function(error, stdout, stderr) {
+                            //     if (error) {
+                            //         grunt.fail.warn(error.message);
+                            //     } else {
+                            //         grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
+                            //         tally[size.name]++;
+                            //     }
+                            //     return callback();
+                            // });
+                            
+                            setTimeout(function() {
+                                grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
+                                // return callback();
+                                return callback();
+                            }, 1020);
+
+                        });
+                    });
+                    series.push(function(callback) {
+                        if (tally[size.name]) {
+                            grunt.log.writeln('Created ' + tally[size.name].toString().cyan + ' files for size ' + size.name);
+                        }
+                        return callback();
+                    });
+                });
             });
-
-             done.apply();
-
         });
+
+        // run encode jobs async
+        async.series(series, done);
     });
 };
