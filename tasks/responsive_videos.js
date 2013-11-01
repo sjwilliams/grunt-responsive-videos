@@ -19,7 +19,26 @@ module.exports = function(grunt) {
         separator: '-',
         sizes: [{
             name: 'small',
-            width: 640
+            width: 640,
+            poster: true
+        }],
+        encode:[{
+            webm: [
+                {'-vcodec': 'libvpx'},
+                {'-acodec': 'libvorbis'},
+                {'-crf': '12'},
+                {'-b:v': '1.5M',},
+                {'-q:a': '100'},
+                {'-threads': '0'}
+            ],
+            mp4: [
+                {'-vcodec':'libx264'},
+                {'-acodec': 'libfaac'},
+                {'-pix_fmt': 'yuv420p'},
+                {'-q:v': '4'},
+                {'-q:a': '100'},
+                {'-threads': '0'}
+            ]
         }]
     };
 
