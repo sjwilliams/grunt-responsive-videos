@@ -91,7 +91,9 @@ module.exports = function(grunt) {
         var done = this.async();
         var series = [];
         var options = this.options(DEFAULT_OPTIONS);
-        var tally = {};
+        var sizeTally = {};  // track number of files per size
+        var encodeTally = {}; // track number of files by codec
+        var count = 0; // track total number of files
 
         if (!isValidArray(options.sizes)) {
             return grunt.fail.warn('No sizes have been defined.');
@@ -107,8 +109,7 @@ module.exports = function(grunt) {
             // create a name suffix for our image
             size.name = getName(size.name, size.width, options.separator, size.suffix);
 
-            // track number of files per size
-            tally[size.name] = 0;
+            sizeTally[size.name] = 0;
 
             // build encode settings for each input file
             that.files.forEach(function(f) {
@@ -117,8 +118,6 @@ module.exports = function(grunt) {
                     baseName = path.basename(srcPath, extName), // filename without extension
                     dirName = path.dirname(f.dest),
                     dstPath = path.join(dirName, baseName + size.name);
-
-                var encodeOptions = {};
 
                 // more than 1 source.
                 if (f.src.length > 1) {
@@ -130,15 +129,17 @@ module.exports = function(grunt) {
                 if (!grunt.file.isDir(dirName)) {
                     grunt.file.mkdir(dirName);
                 }
-                
-                // console.log(f,extName, srcPath, dirName, baseName, dstPath);
-
-
 
                 // build encode settings for each output encode type
                 options.encodes.forEach(function(encodeSettings){
                     _.each(encodeSettings, function(codecSettings, codecName){
                         var outPath = dstPath + '.' + codecName;
+
+                        if (encodeTally[codecName]) {
+                            encodeTally[codecName]++;
+                        } else {
+                            encodeTally[codecName] = 1;
+                        }
 
                         // build up flags array ffmpeg-node expects.
                         // ex: ['-i', srcPath, '-vcodec', 'libx264', '-acodec', 'libfaac', '-pix_fmt', 'yuv420p', '-q:v', '4',  '-q:a', '100', '-threads', '0', dstPath]
@@ -157,9 +158,9 @@ module.exports = function(grunt) {
                         // output file
                         flags.push(outPath);
 
-                        // console.log(flags);
-
-                        tally[size.name]++;
+                        // update tallies
+                        sizeTally[size.name]++;
+                        count++;
 
                         // queue encode jobs
                         series.push(function(callback){
@@ -168,28 +169,35 @@ module.exports = function(grunt) {
                             //         grunt.fail.warn(error.message);
                             //     } else {
                             //         grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
-                            //         tally[size.name]++;
+                            //         sizeTally[size.name]++;
                             //     }
                             //     return callback();
                             // });
                             
                             setTimeout(function() {
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
-                                // return callback();
                                 return callback();
                             }, 1020);
 
                         });
                     });
                     series.push(function(callback) {
-                        if (tally[size.name]) {
-                            grunt.log.writeln('Created ' + tally[size.name].toString().cyan + ' files for size ' + size.name);
+                        if (sizeTally[size.name]) {
+                            grunt.log.writeln('Created ' + sizeTally[size.name].toString().cyan + ' files for size ' + size.name);
                         }
                         return callback();
                     });
                 });
             });
         });
+
+        
+        series.push(function(callback){
+            // Todo. Numbers by encode type
+            grunt.log.writeln('Done.');
+        });
+
+        grunt.log.writeln('Starting ' + count.toString().cyan + ' encodes jobs.');
 
         // run encode jobs async
         async.series(series, done);
