@@ -158,27 +158,28 @@ module.exports = function(grunt) {
                         // output file
                         flags.push(outPath);
 
+                        // if an output file already exist, delete it.
+                        // ffmpeg-node fails otherwise
+                        if (grunt.file.exists(outPath)) {
+                            grunt.file.delete(outPath);
+                        }
+
                         // update tallies
                         sizeTally[size.name]++;
                         count++;
 
                         // queue encode jobs
                         series.push(function(callback){
-                            // ffmpeg.exec(['-i', srcPath, '-vcodec', 'libx264', '-acodec', 'libfaac', '-pix_fmt', 'yuv420p', '-q:v', '4',  '-q:a', '100', '-threads', '0', dstPath], function(error, stdout, stderr) {
-                            //     if (error) {
-                            //         grunt.fail.warn(error.message);
-                            //     } else {
-                            //         grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
-                            //         sizeTally[size.name]++;
-                            //     }
-                            //     return callback();
-                            // });
-                            
-                            setTimeout(function() {
+                            ffmpeg.exec(flags, function(error, info) {
+                                // if (error) {
+                                //     grunt.fail.warn(error.message);
+                                // } else {
+                                //     grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
+                                // }
+                                // console.log(error);
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
                                 return callback();
-                            }, 1020);
-
+                            });
                         });
                     });
                     series.push(function(callback) {
@@ -191,10 +192,9 @@ module.exports = function(grunt) {
             });
         });
 
-        
         series.push(function(callback){
             // Todo. Numbers by encode type
-            grunt.log.writeln('Done.');
+            // grunt.verbose.ok('Done');
         });
 
         grunt.log.writeln('Starting ' + count.toString().cyan + ' encodes jobs.');
