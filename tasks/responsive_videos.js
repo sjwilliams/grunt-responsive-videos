@@ -155,6 +155,9 @@ module.exports = function(grunt) {
                             }
                         });
 
+                        // set size
+                        flags.push('-vf', 'scale='+size.width+':-1');
+
                         // output file
                         flags.push(outPath);
 
@@ -180,9 +183,11 @@ module.exports = function(grunt) {
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
                                 return callback();
                             });
+                            return callback();
                         });
 
                     });
+
                     series.push(function(callback) {
                         if (sizeTally[size.name]) {
                             grunt.log.writeln('Created ' + sizeTally[size.name].toString().cyan + ' files for size ' + size.name);
