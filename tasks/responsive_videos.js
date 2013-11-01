@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 
     // check whether we've been given any valid size values
     function isValidSize(obj) {
-        return (_.isNumber(obj.width));
+        return (_.isNumber(obj.width) && obj.width%2===0);
     }
 
 
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
         options.sizes.forEach(function(size) {
 
             if (!isValidSize(size)) {
-                return grunt.fail.warn('Size is invalid');
+                return grunt.fail.warn('Width is invalid. It must be an integer and divisible by 2 (libx264 requirement)');
             }
 
             // create a name suffix for our image
@@ -181,6 +181,7 @@ module.exports = function(grunt) {
                                 return callback();
                             });
                         });
+
                     });
                     series.push(function(callback) {
                         if (sizeTally[size.name]) {
