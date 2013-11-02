@@ -79,9 +79,9 @@ module.exports = function(grunt) {
     }
 
     grunt.registerMultiTask('responsive_videos', 'Videos at various responsive sizes', function() {
+        var that = this;
 
         // Merge task-specific and/or target-specific options with these defaults.
-        var that = this;
         var done = this.async();
         var series = [];
         var options = this.options(DEFAULT_OPTIONS);
@@ -133,7 +133,7 @@ module.exports = function(grunt) {
                         flags.push('-vframes', '1');
                         flags.push('-vf', 'scale='+size.width+':-1');
                         flags.push(posterPath);
-                        ffmpeg.exec(flags, function(error, info) {
+                        ffmpeg.exec(flags, function() {
                             grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + posterPath);
                             return callback();
                         });
@@ -183,13 +183,7 @@ module.exports = function(grunt) {
 
                         // queue encode jobs
                         series.push(function(callback){
-                            ffmpeg.exec(flags, function(error, info) {
-                                // if (error) {
-                                //     grunt.fail.warn(error.message);
-                                // } else {
-                                //     grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
-                                // }
-                                // console.log(error);
+                            ffmpeg.exec(flags, function() {
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
                                 return callback();
                             });
