@@ -11,6 +11,11 @@ If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out th
 npm install grunt-responsive-videos --save-dev
 ```
 
+Additionally, this plugin requries ffmpeg with libx264 and libvpx to encode .mp4 and .webm, which are common HTML5 codecs, and required for the unit tests.
+```shell
+brew install ffmpeg --with-libvorbis --with-nonfree --with-gpl --with-libvpx --with-pthreads --with-libx264 --with-libfaac --with-libtheora
+```
+
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
