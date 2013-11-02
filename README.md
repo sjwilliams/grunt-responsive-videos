@@ -55,6 +55,7 @@ Default value:
   width: 1024,
   poster: false
 }]
+```
 
 An array of objects containing the sizes we want to resize our video to.
 
@@ -88,6 +89,7 @@ Default value:
       {'-threads': '0'}
   ]
   }]
+```
 
 An array of objects containing the codecs you'd like to produce. The key is used as the extension, and the array of objects will be converted to flags passed into ffmpeg.
 
