@@ -149,9 +149,9 @@ grunt.initConfig({
       },
       files: [{
         expand: true,
-        src: ['*.{mov,mp4}'],
-        cwd: srcVideos,
-        dest: tmpFolder
+        src: ['video/**.{mov,mp4}'],
+        cwd: 'assets/',
+        dest: 'tmp/'
       }]
     }
   },
