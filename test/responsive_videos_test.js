@@ -1,6 +1,7 @@
 'use strict';
 
-var grunt = require('grunt');
+var grunt = require('grunt'),
+    async = require('async');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -28,20 +29,82 @@ exports.responsive_videos = {
     done();
   },
   default_options: function(test) {
-    test.expect(1);
+    var actual = {},
+        expected = {};
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var files = [{
+      filename: 'big_buck_bunny-small.jpg',
+      expected: 'test/expected/default_options/',
+      actual: 'tmp/default_options/'
+    },
+    {
+      filename: 'big_buck_bunny-small.mp4',
+      expected: 'test/expected/default_options/',
+      actual: 'tmp/default_options/'
+    }, 
+    {
+      filename: 'big_buck_bunny-small.webm',
+      expected: 'test/expected/default_options/',
+      actual: 'tmp/default_options/'
+    }, 
+    {
+      filename: 'big_buck_bunny-large.jpg',
+      expected: 'test/expected/default_options/',
+      actual: 'tmp/default_options/'
+    },
+    {
+      filename: 'big_buck_bunny-large.mp4',
+      expected: 'test/expected/default_options/',
+      actual: 'tmp/default_options/'
+    }, 
+    {
+      filename: 'big_buck_bunny-large.webm',
+      expected: 'test/expected/default_options/',
+      actual: 'tmp/default_options/'
+    }];
+
+    test.expect(files.length);
+
+    for (var i = 0, l = files.length; i < l; i++) {
+      actual = grunt.file.read(files[i].actual + files[i].filename);
+      expected = grunt.file.read(files[i].expected + files[i].filename);
+      test.equal(actual, expected, 'should be the same video.');
+    }
 
     test.done();
   },
   custom_options: function(test) {
-    test.expect(1);
+    var actual = {},
+        expected = {};
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    var files = [{
+      filename: 'big_buck_bunny-240.jpg',
+      expected: 'test/expected/custom_options/',
+      actual: 'tmp/custom_options/'
+    },
+    {
+      filename: 'big_buck_bunny-240.webm',
+      expected: 'test/expected/custom_options/',
+      actual: 'tmp/custom_options/'
+    }, 
+    {
+      filename: 'cappadocia-240.jpg',
+      expected: 'test/expected/custom_options/',
+      actual: 'tmp/custom_options/'
+    },
+    {
+      filename: 'cappadocia-240.webm',
+      expected: 'test/expected/custom_options/',
+      actual: 'tmp/custom_options/'
+    }];
+
+    test.expect(files.length);
+
+    for (var i = 0, l = files.length; i < l; i++) {
+      actual = grunt.file.read(files[i].actual + files[i].filename);
+      expected = grunt.file.read(files[i].expected + files[i].filename);
+      test.equal(actual, expected, 'should be the same video.');
+    }
 
     test.done();
   },
