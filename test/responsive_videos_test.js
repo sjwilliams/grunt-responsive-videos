@@ -1,7 +1,7 @@
 'use strict';
 
 var grunt = require('grunt'),
-    async = require('async');
+    crypto = require('crypto');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -28,9 +28,11 @@ exports.responsive_videos = {
     // setup here if necessary
     done();
   },
+
+  // compare hashes of expected and actual encodes
   default_options: function(test) {
-    var actual = {},
-        expected = {};
+    var actual,
+        expected;
 
     var files = [{
       filename: 'big_buck_bunny-small.jpg',
@@ -66,16 +68,18 @@ exports.responsive_videos = {
     test.expect(files.length);
 
     for (var i = 0, l = files.length; i < l; i++) {
-      actual = grunt.file.read(files[i].actual + files[i].filename);
-      expected = grunt.file.read(files[i].expected + files[i].filename);
-      test.equal(actual, expected, 'should be the same video.');
+      actual = crypto.createHash('md5').update(grunt.file.read(files[i].actual + files[i].filename)).digest("hex");
+      expected = crypto.createHash('md5').update(grunt.file.read(files[i].expected + files[i].filename)).digest("hex");
+      test.equal(actual, expected, 'should be the same video for ' + files[i].filename);
     }
-
+    
     test.done();
   },
+
+  // compare hashes of expected and actual encodes
   custom_options: function(test) {
-    var actual = {},
-        expected = {};
+    var actual,
+        expected;
 
     var files = [{
       filename: 'big_buck_bunny-240.jpg',
@@ -101,9 +105,9 @@ exports.responsive_videos = {
     test.expect(files.length);
 
     for (var i = 0, l = files.length; i < l; i++) {
-      actual = grunt.file.read(files[i].actual + files[i].filename);
-      expected = grunt.file.read(files[i].expected + files[i].filename);
-      test.equal(actual, expected, 'should be the same video.');
+      actual = crypto.createHash('md5').update(grunt.file.read(files[i].actual + files[i].filename)).digest("hex");
+      expected = crypto.createHash('md5').update(grunt.file.read(files[i].expected + files[i].filename)).digest("hex");
+      test.equal(actual, expected, 'should be the same video for ' + files[i].filename);
     }
 
     test.done();

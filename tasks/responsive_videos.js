@@ -36,7 +36,6 @@ module.exports = function(grunt) {
                 {'-vcodec': 'libvpx'},
                 {'-acodec': 'libvorbis'},
                 {'-crf': '12'},
-                {'-b:v': '1.5M',},
                 {'-q:a': '100'},
                 {'-threads': '0'}
             ],

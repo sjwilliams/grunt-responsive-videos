@@ -1,6 +1,6 @@
 # grunt-responsive-videos
 
-> Generate videos at various sizes
+> Generate multiple video encodes at varying sizes for responsive, HTML5 video
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
@@ -81,7 +81,6 @@ Default value:
       {'-vcodec': 'libvpx'},
       {'-acodec': 'libvorbis'},
       {'-crf': '12'},
-      {'-b:v': '1.5M',},
       {'-q:a': '100'},
       {'-threads': '0'}
   ],
@@ -96,7 +95,7 @@ Default value:
   }]
 ```
 
-An array of objects containing the codecs you'd like to produce. The key is used as the extension, and the array of objects will be converted to flags passed into ffmpeg.
+An array of objects containing the codecs you'd like to produce. The keys are used as the extension, and the array of objects will be converted to flags passed into ffmpeg.
 
 The above are the defaults for an encode job and should give reasonable results for HTML5 video.
 
@@ -111,7 +110,7 @@ The character used to separate the video filename from the size name.
 ### Usage Examples
 
 #### Default Options
-The default options will produce an MP4 and WEBM with an poster image at 320px and 640px wide. They will be named my-video-small.ext and my-video-large.ext.
+The default options will produce a .mp4 and a .webm with an poster image at 320px and 640px wide. They will be named my-video-small.ext and my-video-large.ext.
 
 ```js
 grunt.initConfig({
@@ -119,7 +118,7 @@ grunt.initConfig({
     myTask{
       options: {},
       files: {
-        'src/': '/dest',
+        ...
       }
     }
   },
@@ -127,7 +126,7 @@ grunt.initConfig({
 ```
 
 #### Custom Options
-In this example, we specify custom sizes and a source path. We'll only generate .webm files.
+In this example, we specify custom sizes and a source path. We'll only generate .webm files and poster images, and we'll not using custom naming, falling back to -320.web names instead of -small.webm, etc.
 
 ```js
 grunt.initConfig({
@@ -158,6 +157,8 @@ grunt.initConfig({
   },
 })
 ```
+## Known Issues
+- Genereated .webm files in unit tests are returning different checksums on every run, making reliabe test impossible. ffmpeg settings issue?
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
@@ -168,7 +169,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * Initial Release
 
 ## Additional Credit 
-This plugin *heavily* inspired by andismith's [grunt-responsive-images](https://github.com/andismith/grunt-responsive-images)
+This plugin is *heavily* inspired by andismith's [grunt-responsive-images](https://github.com/andismith/grunt-responsive-images)
 
 [Big Buck Bunny](http://www.bigbuckbunny.org/) trailer in test assets is (c) copyright 2008, Blender Foundation. It is released under the [Creative Commons Attribution 3.0](http://creativecommons.org/licenses/by/3.0/) license.
 

@@ -48,7 +48,6 @@ module.exports = function(grunt) {
               {'-vcodec': 'libvpx'},
               {'-acodec': 'libvorbis'},
               {'-crf': '15'},
-              {'-b:v': '1.5M',},
               {'-q:a': '80'}
             ]
           }]
@@ -80,7 +79,7 @@ module.exports = function(grunt) {
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
   grunt.registerTask('test', ['clean', 'responsive_videos', 'nodeunit']);
-  // grunt.registerTask('test', ['clean', 'responsive_videos']);
+  // grunt.registerTask('test', ['nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
