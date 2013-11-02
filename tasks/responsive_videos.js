@@ -117,7 +117,8 @@ module.exports = function(grunt) {
                     srcPath = f.src[0],
                     baseName = path.basename(srcPath, extName), // filename without extension
                     dirName = path.dirname(f.dest),
-                    dstPath = path.join(dirName, baseName + size.name);
+                    dstPath = path.join(dirName, baseName + size.name),
+                    posterPath = dstPath + '.jpg';
 
                 // more than 1 source.
                 if (f.src.length > 1) {
@@ -130,7 +131,22 @@ module.exports = function(grunt) {
                     grunt.file.mkdir(dirName);
                 }
 
-                // build encode settings for each output encode type
+                // queue poster creation
+                if (size.poster) {
+                    series.push(function(callback){
+                        var flags = [];
+                        flags.push('-i', srcPath);
+                        flags.push('-vframes', '1');
+                        flags.push('-vf', 'scale='+size.width+':-1');
+                        flags.push(posterPath);
+                        ffmpeg.exec(flags, function(error, info) {
+                            grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + posterPath);
+                        });
+                        return callback();
+                    });
+                }
+
+                // generate encode settings for each output encode type
                 options.encodes.forEach(function(encodeSettings){
                     _.each(encodeSettings, function(codecSettings, codecName){
                         var outPath = dstPath + '.' + codecName;
@@ -181,7 +197,6 @@ module.exports = function(grunt) {
                                 // }
                                 // console.log(error);
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
-                                return callback();
                             });
                             return callback();
                         });
