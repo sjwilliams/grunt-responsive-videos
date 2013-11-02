@@ -1,7 +1,7 @@
 {
   "name": "grunt-responsive-videos",
   "description": "Generate multiple video encodes at varying sizes for responsive, HTML5 video applications",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/sjwilliams/grunt-responsive-videos",
   "author": {
     "name": "Josh Williams",
@@ -28,7 +28,7 @@
   "scripts": {
     "test": "grunt test"
   },
-  "devDependencies": {
+  "dependencies": {
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-nodeunit": "~0.2.0",
