@@ -162,4 +162,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 * Initial Release
 
-## This plugin *heavily* inspired/lifted from andismith's [grunt-responsive-images](https://github.com/andismith/grunt-responsive-images)
+## Additional Credit 
+This plugin *heavily* inspired/lifted from andismith's [grunt-responsive-images](https://github.com/andismith/grunt-responsive-images)
