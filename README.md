@@ -33,12 +33,13 @@ In your project's Gruntfile, add a section named `responsive_videos` to the data
 ```js
 grunt.initConfig({
   responsive_videos: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
+    myTask:{
+      options: {
+        // Task-specific options go here.
+      },
+      files[
+      ]
+    }
   },
 })
 ```
