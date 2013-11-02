@@ -141,8 +141,8 @@ module.exports = function(grunt) {
                         flags.push(posterPath);
                         ffmpeg.exec(flags, function(error, info) {
                             grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + posterPath);
+                            return callback();
                         });
-                        return callback();
                     });
                 }
 
@@ -197,8 +197,8 @@ module.exports = function(grunt) {
                                 // }
                                 // console.log(error);
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
+                                return callback();
                             });
-                            return callback();
                         });
 
                     });
@@ -211,11 +211,6 @@ module.exports = function(grunt) {
                     });
                 });
             });
-        });
-
-        series.push(function(callback){
-            // Todo. Numbers by encode type
-            // grunt.verbose.ok('Done');
         });
 
         grunt.log.writeln('Starting ' + count.toString().cyan + ' encodes jobs.');
