@@ -1,6 +1,6 @@
 # grunt-responsive-videos
 
-> Generate multiple video encodes at varying sizes for responsive, HTML5 video
+> Generate multiple video encodes at varying sizes for responsive, HTML5 video applications.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
