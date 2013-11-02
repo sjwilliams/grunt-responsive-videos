@@ -114,7 +114,7 @@ grunt.initConfig({
     myTask{
       options: {},
       files: {
-        'dest/default_options': ['src/testing', 'src/123'],
+        'src/': '/dest',
       }
     }
   },
