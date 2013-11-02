@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         sizes: [{
             name: 'small',
             width: 320,
-            poster: false
+            poster: true
         },{
             name: 'large',
             width: 640,
@@ -65,22 +65,17 @@ module.exports = function(grunt) {
 
 
     // create a name to suffix to our file.
-    function getName(name, width, separator, suffix) {
+    function getName(name, width, separator) {
 
         // handle empty separator as no separator
         if (typeof separator === 'undefined') {
             separator = '';
         }
 
-        // handle empty suffix as no suffix
-        if (typeof suffix === 'undefined') {
-            suffix = '';
-        }
-
         if (name) {
-            return separator + name + suffix;
+            return separator + name;
         } else {
-            return separator + width + suffix;
+            return separator + width;
         }
     }
 
@@ -107,7 +102,7 @@ module.exports = function(grunt) {
             }
 
             // create a name suffix for our image
-            size.name = getName(size.name, size.width, options.separator, size.suffix);
+            size.name = getName(size.name, size.width, options.separator);
 
             sizeTally[size.name] = 0;
 
