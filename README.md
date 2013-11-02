@@ -163,4 +163,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * Initial Release
 
 ## Additional Credit 
-This plugin *heavily* inspired/lifted from andismith's [grunt-responsive-images](https://github.com/andismith/grunt-responsive-images)
+This plugin *heavily* inspired by andismith's [grunt-responsive-images](https://github.com/andismith/grunt-responsive-images)
+
+[Big Buck Bunny](http://www.bigbuckbunny.org/) trailer in test assets is (c) copyright 2008, Blender Foundation. It is released under the [Creative Commons Attribution 3.0](http://creativecommons.org/licenses/by/3.0/) license.
+
+[Hot air ballon ride over Cappadocia, Turkey](http://www.youtube.com/watch?v=xIR8TxSBgyg) in test assets is (c) copyright 2012, Josh Williams. It is released under the [Creative Commons Attribution 3.0](http://creativecommons.org/licenses/by/3.0/) license.
