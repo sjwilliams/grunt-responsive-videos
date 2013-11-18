@@ -167,7 +167,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 *0.0.3*
 
-* Must smaller test media
+* Much smaller test media
 
 *0.0.2*
 
