@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         options: {
         },
         files: {
-          'tmp/default_options/big_buck_bunny.mov': 'test/assets/default_options/big_buck_bunny.mov',
+          'tmp/default_options/big_buck_bunny.mov': 'test/assets/big_buck_bunny.mov',
         },
       },
       custom_options: {
@@ -54,9 +54,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          src: ['custom_options/**.{mp4,mov}'],
+          src: ['**.{mp4,mov}'],
           cwd: 'test/assets/',
-          dest: 'tmp/'
+          dest: 'tmp/custom_options/'
         }],
       },
     },
