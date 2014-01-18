@@ -78,6 +78,15 @@ module.exports = function(grunt) {
         }
     }
 
+    // if a file exist, delete it.
+    // otherwise ffmpeg will fail
+    function deleteFile(path) {
+        if (grunt.file.exists(path)) {
+            console.log(path);
+            grunt.file.delete(path);
+        }
+    }
+
     grunt.registerMultiTask('responsive_videos', 'Videos at various responsive sizes', function() {
         var that = this;
 
@@ -127,6 +136,7 @@ module.exports = function(grunt) {
 
                 // queue poster creation
                 if (size.poster) {
+                    deleteFile(posterPath);
                     series.push(function(callback){
                         var flags = [];
                         flags.push('-i', srcPath);
@@ -171,11 +181,8 @@ module.exports = function(grunt) {
                         // output file
                         flags.push(outPath);
 
-                        // if an output file already exist, delete it.
-                        // ffmpeg-node fails otherwise
-                        if (grunt.file.exists(outPath)) {
-                            grunt.file.delete(outPath);
-                        }
+                        // delete older versions
+                        deleteFile(outPath);
 
                         // update tallies
                         sizeTally[size.name]++;
