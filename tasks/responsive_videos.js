@@ -239,7 +239,7 @@ module.exports = function(grunt) {
                         });
 
                         // set size
-                        flags.push('-vf', 'scale='+size.width+':-1');
+                        flags.push('-vf', 'scale='+size.width+':trunc(ow/a/2)*2');
 
                         // output file
                         flags.push(outPath);
