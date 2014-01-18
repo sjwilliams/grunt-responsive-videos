@@ -205,6 +205,7 @@ module.exports = function(grunt) {
                         flags.push('-vframes', '1'); //grab only one frame
                         flags.push('-vf', 'scale='+size.width+':-1');
                         flags.push(posterPath);
+                        grunt.log.debug('ffmpeg ' + flags.join(' '));
                         ffmpeg.exec(flags, function() {
                             grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + posterPath);
                             return callback();
@@ -252,6 +253,7 @@ module.exports = function(grunt) {
 
                         // queue encode jobs
                         series.push(function(callback){
+                            grunt.log.debug('ffmpeg ' + flags.join(' '));
                             ffmpeg.exec(flags, function() {
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
                                 return callback();
