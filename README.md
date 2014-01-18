@@ -167,7 +167,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 *0.0.4*
 
-* Fixed issue [4](https://github.com/sjwilliams/grunt-responsive-videos/issues/4) of freezing on re-run. 
+* Fixed [issue 4](https://github.com/sjwilliams/grunt-responsive-videos/issues/4): freezing on re-run. 
 
 *0.0.3*
 
