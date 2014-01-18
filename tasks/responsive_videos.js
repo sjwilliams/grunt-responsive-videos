@@ -82,10 +82,36 @@ module.exports = function(grunt) {
     // otherwise ffmpeg will fail
     function deleteFile(path) {
         if (grunt.file.exists(path)) {
-            console.log(path);
             grunt.file.delete(path);
         }
     }
+
+    // determine which type of poster to create for
+    // the given video size and related options.
+    // 
+    // Based on:
+    // https://github.com/sjwilliams/grunt-responsive-videos/issues/3#issuecomment-31206990
+    // 
+    // The default will be to use the first frame, but also options to 'fastseek'
+    // and 'accurateseek' to a specific portion of the video
+    function buildPosterFlags(size) {
+        var posterBuilderOptions = {
+            'boolean': function(){
+                console.log('boolean');
+            },
+            'string': function(){
+                console.log('string');
+            },
+            'object': function(){
+                console.log('object');
+            }
+        };
+
+        var posterConfigType = typeof size.poster;
+        console.log(posterConfigType);
+
+    }
+
 
     grunt.registerMultiTask('responsive_videos', 'Videos at various responsive sizes', function() {
         var that = this;
@@ -134,15 +160,52 @@ module.exports = function(grunt) {
                     grunt.file.mkdir(dirName);
                 }
 
-                // queue poster creation
+                // determine which type of poster to create for
+                // the given video size and related options.
+                // 
+                // The default will be to use the first frame, but also options to 'fastseek'
+                // and 'accurateseek' to a specific portion of the video
+                // 
+                // Based on:
+                // https://github.com/sjwilliams/grunt-responsive-videos/issues/3#issuecomment-31206990
+                // https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
                 if (size.poster) {
                     deleteFile(posterPath);
+        
                     series.push(function(callback){
                         var flags = [];
-                        flags.push('-i', srcPath);
-                        flags.push('-vframes', '1');
+                        var posterConfigType = typeof size.poster;
+                        var seektime;
+
+                        // accurateseek object contains an 'accurateseek' property
+                        if (posterConfigType === 'object' && typeof size.poster.accurateseek === 'string') {
+                        
+                            // -ss param after input
+                            flags.push('-i', srcPath);
+                            flags.push('-ss', size.poster.accurateseek);
+
+                        // string is assumed to be format '00:02:00' and will fast seek.
+                        // if object with fastseek propery, same settings
+                        } else if (posterConfigType === 'string' || (posterConfigType === 'object' && typeof size.poster.fastseek === 'string')) {
+                            seektime = (posterConfigType === 'string') ? size.poster : size.poster.fastseek;
+
+                            // -ss param before input
+                            flags.push('-ss', seektime);
+                            flags.push('-i', srcPath);
+
+                         // boolean true or something configured wrong. 
+                         // just grab the first frame. warn if misconfigured.
+                        } else {
+                            if (posterConfigType !== 'boolean') {
+                                grunt.log.writeln('Poster option invalid. Using first frame.');
+                            }
+                            flags.push('-i', srcPath);
+                        }
+
+                        flags.push('-vframes', '1'); //grab only one frame
                         flags.push('-vf', 'scale='+size.width+':-1');
                         flags.push(posterPath);
+                        grunt.log.debug('ffmpeg ' + flags.join(' '));
                         ffmpeg.exec(flags, function() {
                             grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + posterPath);
                             return callback();
@@ -190,6 +253,7 @@ module.exports = function(grunt) {
 
                         // queue encode jobs
                         series.push(function(callback){
+                            grunt.log.debug('ffmpeg ' + flags.join(' '));
                             ffmpeg.exec(flags, function() {
                                 grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
                                 return callback();
