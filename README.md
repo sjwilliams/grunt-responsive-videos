@@ -159,7 +159,7 @@ grunt.initConfig({
 })
 ```
 ## Known Issues
-- Genereated .webm files in unit tests are returning different checksums on every run, making reliabe test impossible. ffmpeg settings issue?
+- Generated .webm files in unit tests are returning different checksums on every run, making reliable test impossible. ffmpeg settings issue?
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
