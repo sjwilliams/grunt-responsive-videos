@@ -167,10 +167,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 *0.0.4*
 
-* Enhancement [issue 3](https://github.com/sjwilliams/grunt-responsive-videos/issues/3): More robust poster options.
+* Enhancement https://github.com/sjwilliams/grunt-responsive-videos/issues/3: More robust poster options.
 * Enhancement: --debug logs
-* Fixed [issue 5](https://github.com/sjwilliams/grunt-responsive-videos/issues/5): Occasional zero byte h.246 encodes.
-* Fixed [issue 4](https://github.com/sjwilliams/grunt-responsive-videos/issues/4): Freezing on some task re-run. 
+* Fixed https://github.com/sjwilliams/grunt-responsive-videos/issues/5: Occasional zero byte h.246 encodes.
+* Fixed https://github.com/sjwilliams/grunt-responsive-videos/issues/4: Freezing on some task re-run. 
 
 *0.0.3*
 
