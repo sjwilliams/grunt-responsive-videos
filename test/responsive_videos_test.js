@@ -112,4 +112,100 @@ exports.responsive_videos = {
 
     test.done();
   },
+
+  // compare hashes of expected and actual encodes.
+  poster_options: function(test) {
+    var actual,
+      expected;
+
+    // just looking at the generated .jpgs, ignoring the generated videos
+    var files = [
+
+      // generated posters match expected
+      {
+        testType: 'expectedToActual',
+        filename: 'cappadocia-poster_boolean.jpg',
+        expected: 'test/expected/poster_options/',
+        actual: 'tmp/poster_options/'
+      },
+      {
+        testType: 'expectedToActual',
+        filename: 'cappadocia-poster_object_accurateseek_altstring.jpg',
+        expected: 'test/expected/poster_options/',
+        actual: 'tmp/poster_options/'
+      }, 
+      {
+        testType: 'expectedToActual',
+        filename: 'cappadocia-poster_object_accurateseek.jpg',
+        expected: 'test/expected/poster_options/',
+        actual: 'tmp/poster_options/'
+      },
+      {
+        testType: 'expectedToActual',
+        filename: 'cappadocia-poster_object_fastseek.jpg',
+        expected: 'test/expected/poster_options/',
+        actual: 'tmp/poster_options/'
+      },
+      {
+        testType: 'expectedToActual',
+        filename: 'cappadocia-poster_string_fastseek.jpg',
+        expected: 'test/expected/poster_options/',
+        actual: 'tmp/poster_options/'
+      },
+      
+      // fastseek images are the same regardless of whether
+      // they're specified with a string or object.
+      {
+        testType: 'produceSame',
+        expected: 'tmp/poster_options/cappadocia-poster_string_fastseek.jpg',
+        actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
+      },
+
+      // fastseek image and accurateseek should be different
+      {
+        testType: 'produceDifferent',
+        expected: 'tmp/poster_options/cappadocia-poster_object_accurateseek.jpg',
+        actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
+      },
+
+
+      // fastseek image and accurateseek should be different from boolean first frame option
+      {
+        testType: 'produceDifferent',
+        expected: 'tmp/poster_options/cappadocia-poster_boolean.jpg',
+        actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
+      },
+      {
+        testType: 'produceDifferent',
+        expected: 'tmp/poster_options/cappadocia-poster_boolean.jpg',
+        actual: 'tmp/poster_options/cappadocia-poster_object_accurateseek.jpg'
+      }
+    ];
+
+    test.expect(files.length);
+
+    for (var i = 0, l = files.length; i < l; i++) {
+
+      // new matches expected
+      if (files[i].testType === 'expectedToActual') {
+        actual = crypto.createHash('md5').update(grunt.file.read(files[i].actual + files[i].filename)).digest("hex");
+        expected = crypto.createHash('md5').update(grunt.file.read(files[i].expected + files[i].filename)).digest("hex");
+        test.equal(actual, expected, 'should be the same poster for ' + files[i].filename);
+     
+      // different options should produce same files
+      } else if (files[i].testType === 'produceSame') {
+        actual = crypto.createHash('md5').update(grunt.file.read(files[i].actual)).digest("hex");
+        expected = crypto.createHash('md5').update(grunt.file.read(files[i].expected)).digest("hex");
+        test.equal(actual, expected, 'should be the same poster for ' + files[i].filename);
+      
+      } else if (files[i].testType === 'produceDifferent') {
+        actual = crypto.createHash('md5').update(grunt.file.read(files[i].actual)).digest("hex");
+        expected = crypto.createHash('md5').update(grunt.file.read(files[i].expected)).digest("hex");
+        test.notEqual(actual, expected, 'should be different poster for ' + files[i].filename);
+      }
+
+    }
+
+    test.done();
+  },
 };

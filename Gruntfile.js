@@ -59,6 +59,56 @@ module.exports = function(grunt) {
           dest: 'tmp/custom_options/'
         }],
       },
+      poster_options: {
+        options: {
+          sizes: [{
+            width: 200,
+            name: 'poster_boolean',
+            poster: true
+          },{
+            width: 200,
+            name: 'poster_object_fastseek',
+            poster: {
+              fastseek: '1'
+            }
+          },{
+            width: 200,
+            name: 'poster_string_fastseek',
+            poster: {
+              fastseek: '1'
+            }
+          },{
+            width: 200,
+            name: 'poster_object_accurateseek',
+            poster: {
+              accurateseek: '1'
+            }
+          },{
+            width: 200,
+            name: 'poster_object_accurateseek_altstring',
+            poster: {
+              accurateseek: '00:00:01'
+            }
+          }
+          ],
+          encodes:[{
+            mp4: [
+              {'-vcodec':'libx264'},
+              {'-acodec': 'libfaac'},
+              {'-pix_fmt': 'yuv420p'},
+              {'-q:v': '4'},
+              {'-q:a': '100'},
+              {'-threads': '0'}
+            ]
+          }]
+        },
+        files: [{
+          expand: true,
+          src: ['cappadocia.mp4'],
+          cwd: 'test/assets/',
+          dest: 'tmp/poster_options/'
+        }],
+      }
     },
 
     // Unit tests.
