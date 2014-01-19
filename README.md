@@ -69,7 +69,44 @@ If a `name` is specified, then the file will be suffixed with this name. e.g. my
 
 If a `name` is not specified, then the file will be suffixed with the width. e.g. my-video-320.jpg
 
-If `poster` is true, create an image from the first frame of the video at this output size. e.g. my-video-320.jpg
+If `poster` is true, create an image from the first frame of the video at this output size. e.g. my-video-320.jpg.
+
+The poster option may also be used to seek to a particular time, using FFMPEG's `fastseek` or `accurateseek` [options](https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg)
+
+`fastseek` like:
+
+```js
+{
+  name: "large",
+  width: 1024,
+  poster: '00:00:02'
+}
+```
+
+or
+
+```js
+{
+  name: "large",
+  width: 1024,
+  poster: {
+    fastseek: '00:00:02'
+  }
+}
+```
+
+`accurateseek` like:
+
+```js
+{
+  name: "large",
+  width: 1024,
+  poster: {
+    accurateseek: '00:00:02'
+  }
+```
+
+Poster seek time can be in "HH:MM:SS" format (example: "00:00:05" for 5 seconds) or "S" (example: "5", for 5 seconds);
 
 #### options.encodes
 Type: `Array`
