@@ -139,7 +139,7 @@ The above are the defaults for an encode job and should give reasonable results 
 
 ##### Encode Resources
 * [x264 encoding guide from FFMPEG](https://ffmpeg.org/trac/ffmpeg/wiki/x264EncodingGuide)
-* [VBR settings guide](http://slhck.info/video-encoding.html) explain many of the important flags.
+* [VBR settings guide](http://slhck.info/video-encoding.html) explains many of the important flags.
 * [MP4 examples](https://www.virag.si/2012/01/web-video-encoding-tutorial-with-ffmpeg-0-9/)
 * [WebM examples](https://www.virag.si/2012/01/webm-web-video-encoding-tutorial-with-ffmpeg-0-9/)
 
