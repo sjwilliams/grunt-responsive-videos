@@ -5,7 +5,7 @@
  * Based on the very handy grunt-responsive-images
  * by andismith: https://github.com/andismith/grunt-responsive-images
  * and ffmpeg-node by xonecase: https://github.com/xonecas/ffmpeg-node
- * 
+ *
  * Copyright (c) 2013 Josh Williams
  * Licensed under the MIT license.
  */
@@ -33,11 +33,16 @@ module.exports = function(grunt) {
         ],
         encodes:[{
             webm: [
-                {'-vcodec': 'libvpx'},
-                {'-acodec': 'libvorbis'},
-                {'-crf': '12'},
-                {'-q:a': '100'},
-                {'-threads': '0'}
+               {'-vcodec': 'libvpx'},
+               {'-acodec': 'libvorbis'},
+               {'-q:a': '100'},
+               {'-quality': 'good'},
+               {'-cpu-used': '0'},
+               {'-b:v': '500k'},
+               {'-qmax': '42'},
+               {'-maxrate': '500k'},
+               {'-bufsize': '1000k'},
+               {'-threads': '0'}
             ],
             mp4: [
                 {'-vcodec':'libx264'},
@@ -88,10 +93,10 @@ module.exports = function(grunt) {
 
     // determine which type of poster to create for
     // the given video size and related options.
-    // 
+    //
     // Based on:
     // https://github.com/sjwilliams/grunt-responsive-videos/issues/3#issuecomment-31206990
-    // 
+    //
     // The default will be to use the first frame, but also options to 'fastseek'
     // and 'accurateseek' to a specific portion of the video
     function buildPosterFlags(size) {
@@ -151,7 +156,7 @@ module.exports = function(grunt) {
 
                 // more than 1 source.
                 if (f.src.length > 1) {
-                    return grunt.fail.warn('Unable to encode more than one video in compact or files object format.\n' + 
+                    return grunt.fail.warn('Unable to encode more than one video in compact or files object format.\n' +
                         'For multiple files please use the files array format.\nSee http://gruntjs.com/configuring-tasks');
                 }
 
@@ -162,16 +167,16 @@ module.exports = function(grunt) {
 
                 // determine which type of poster to create for
                 // the given video size and related options.
-                // 
+                //
                 // The default will be to use the first frame, but also options to 'fastseek'
                 // and 'accurateseek' to a specific portion of the video
-                // 
+                //
                 // Based on:
                 // https://github.com/sjwilliams/grunt-responsive-videos/issues/3#issuecomment-31206990
                 // https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
                 if (size.poster) {
                     deleteFile(posterPath);
-        
+
                     series.push(function(callback){
                         var flags = [];
                         var posterConfigType = typeof size.poster;
@@ -179,7 +184,7 @@ module.exports = function(grunt) {
 
                         // accurateseek object contains an 'accurateseek' property
                         if (posterConfigType === 'object' && typeof size.poster.accurateseek === 'string') {
-                        
+
                             // -ss param after input
                             flags.push('-i', srcPath);
                             flags.push('-ss', size.poster.accurateseek);
@@ -193,7 +198,7 @@ module.exports = function(grunt) {
                             flags.push('-ss', seektime);
                             flags.push('-i', srcPath);
 
-                         // boolean true or something configured wrong. 
+                         // boolean true or something configured wrong.
                          // just grab the first frame. warn if misconfigured.
                         } else {
                             if (posterConfigType !== 'boolean') {

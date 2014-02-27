@@ -118,8 +118,13 @@ Default value:
   webm: [
       {'-vcodec': 'libvpx'},
       {'-acodec': 'libvorbis'},
-      {'-crf': '12'},
       {'-q:a': '100'},
+      {'-quality': 'good'},
+      {'-cpu-used': '0'},
+      {'-b:v': '500k'},
+      {'-qmax': '42'},
+      {'-maxrate': '500k'},
+      {'-bufsize': '1000k'},
       {'-threads': '0'}
   ],
   mp4: [
