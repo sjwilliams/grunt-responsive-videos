@@ -208,7 +208,11 @@ module.exports = function(grunt) {
                         }
 
                         flags.push('-vframes', '1'); //grab only one frame
-                        flags.push('-vf', 'scale='+size.width+':-1');
+                        if (size.custom_ffmpeg_filtergraph) {
+                            flags.push('-vf', size.custom_ffmpeg_filtergraph);
+                        } else {
+                            flags.push('-vf', 'scale='+size.width+':-1');
+                        }
                         flags.push(posterPath);
                         grunt.log.debug('ffmpeg ' + flags.join(' '));
                         ffmpeg.exec(flags, function() {
@@ -244,7 +248,16 @@ module.exports = function(grunt) {
                         });
 
                         // set size
-                        flags.push('-vf', 'scale='+size.width+':trunc(ow/a/2)*2');
+                        if (size.custom_ffmpeg_filtergraph) {
+                            flags.push('-vf', size.custom_ffmpeg_filtergraph);
+                        } else {
+                            flags.push('-vf', 'scale='+size.width+':trunc(ow/a/2)*2');    
+                        }
+
+                        // set other options
+                        if (size.custom_ffmpeg_options instanceof Array) {
+                            flags = flags.concat(size.custom_ffmpeg_options);
+                        }
 
                         // output file
                         flags.push(outPath);
