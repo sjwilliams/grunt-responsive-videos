@@ -204,6 +204,32 @@ grunt.initConfig({
   },
 })
 ```
+
+In this example, we specify a custom filtergraph to crop the video to a square and custom options create a 10 keyframes per second.
+```js
+grunt.initConfig({
+  responsive_videos: {
+    myTask: {
+      options: {
+        sizes: [{
+          width: 360,
+          custom_ffmpeg_filtergraph: 'scale=640:trunc(ow/a/2)*2,crop=360:360:140:0',
+          custom_ffmpeg_options: ['-g', '3'],
+          poster: true
+        }]
+      },
+      files: [{
+        expand: true,
+        src: ['*.{mov,mp4}'],
+        cwd: srcVideos,
+        dest: tmpFolder
+      }]
+    }
+  },
+})
+```
+
+
 ## Known Issues
 - Generated .webm files in unit tests are returning different checksums on every run, making reliable test impossible. ffmpeg settings issue?
 
