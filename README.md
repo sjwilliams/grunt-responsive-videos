@@ -271,7 +271,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 *0.1.1*
 
-* Enhancement: [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/pull/7) Added the ability to pass custom filtergraphs and globally apply additional encode flags.
+* Enhancement [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/pull/7): Added the ability to pass custom filtergraphs and globally apply additional encode flags.
 * Fixed: Test encoded media was no longer valid.
 
 *0.1.0*
