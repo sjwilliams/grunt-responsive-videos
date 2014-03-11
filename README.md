@@ -269,6 +269,11 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+*0.1.1*
+
+* Enhancement: [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/pull/7) Added the ability to pass custom filtergraphs and globally apply additional encode flags.
+* Fixed: Test encoded media was no longer valid.
+
 *0.1.0*
 
 * Better default WebM settings
