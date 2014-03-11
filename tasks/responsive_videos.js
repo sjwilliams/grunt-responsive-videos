@@ -54,7 +54,8 @@ module.exports = function(grunt) {
                 {'-q:a': '100'},
                 {'-threads': '0'}
             ]
-        }]
+        }],
+        additionalFlags:[]
     };
 
 
@@ -104,7 +105,6 @@ module.exports = function(grunt) {
             return 'scale='+sizeObj.width+':trunc(ow/a/2)*2';
         }
     }
-
 
     grunt.registerMultiTask('responsive_videos', 'Videos at various responsive sizes', function() {
         var that = this;
@@ -224,10 +224,17 @@ module.exports = function(grunt) {
                         // input file first
                         flags.push('-i', srcPath);
 
-                        // encode settings next
+                        // given settings for this encode
                         _.each(codecSettings, function(codecSetting){
                             for (var key in codecSetting){
                                 flags.push(key,codecSetting[key]);
+                            }
+                        });
+
+                        // additional, encode-independent settings
+                        _.each(options.additionalFlags, function(flag){
+                            for (var key in flag){
+                                flags.push(key,flag[key]);
                             }
                         });
 
