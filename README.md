@@ -158,6 +158,34 @@ Default value: `-`
 
 The character used to separate the video filename from the size name.
 
+#### options.additionalFlags
+Type: `Array`
+
+Default value: 
+```js 
+[] 
+```
+
+An array of of objects, where the objects will be converted to flags passed into FFMpeg for all encodes. This is an easy way to globally add settings to the default encode settings, or to add settings to custom encodes without re-specifying duplicate settings per encode.
+
+
+In this example, two custom video sizes will be generated using the default encodes and settings, with the addition of `-g 3` flag passed to FFMpeg.
+
+```js
+options: {
+    sizes: [{
+        width: 640,
+        poster: true
+    },{
+        width: 320,
+        poster: true
+    }],
+    additionalFlags: [
+        {'-g': '3'}
+    ]
+}
+```
+
 ### Usage Examples
 
 #### Default Options

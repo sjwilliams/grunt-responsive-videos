@@ -231,7 +231,7 @@ module.exports = function(grunt) {
                             }
                         });
 
-                        // additional, encode-independent settings
+                        // global, encode-independent settings
                         _.each(options.additionalFlags, function(flag){
                             for (var key in flag){
                                 flags.push(key,flag[key]);
