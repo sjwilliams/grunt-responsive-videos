@@ -55,10 +55,12 @@ Default value:
 [{
   name: "small",
   width: 320,
+  filter: '',
   poster: true
 },{
   name: "large",
   width: 1024,
+  filter: '',
   poster: false
 }]
 ```
@@ -68,6 +70,8 @@ An array of objects containing the sizes we want to resize our video to.
 If a `name` is specified, then the file will be suffixed with this name. e.g. my-video-small.mp4
 
 If a `name` is not specified, then the file will be suffixed with the width. e.g. my-video-320.jpg
+
+'filter' is used when custom [filtergraphs](http://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction) are needed, like for cropping. The `width` propety will only be used for naming purpose if a `filter` is specified.
 
 If `poster` is true, create an image from the first frame of the video at this output size. e.g. my-video-320.jpg.
 
@@ -172,8 +176,9 @@ grunt.initConfig({
 })
 ```
 
-#### Custom Options
-In this example, we specify custom sizes and a source path. We'll only generate .webm files and poster images, and we'll not using custom naming, falling back to -320.web names instead of -small.webm, etc.
+#### Custom Option Examples
+##### Customized encode and size settings
+In this example, we specify custom sizes and a source path. We'll only generate .webm files and poster images at 320px wide, and we'll not using custom naming, falling back to -320.web names instead of -small.webm, etc.
 
 ```js
 grunt.initConfig({
@@ -204,8 +209,8 @@ grunt.initConfig({
   },
 })
 ```
-
-In this example, we specify a custom filtergraph to crop the video to a square and custom options create a 10 keyframes per second.
+##### Custom size with filter
+In this example, we specify a custom filtergraph to crop the video to a square.
 ```js
 grunt.initConfig({
   responsive_videos: {
@@ -213,8 +218,7 @@ grunt.initConfig({
       options: {
         sizes: [{
           width: 360,
-          custom_ffmpeg_filtergraph: 'scale=640:trunc(ow/a/2)*2,crop=360:360:140:0',
-          custom_ffmpeg_options: ['-g', '3'],
+          filter: 'scale=640:trunc(ow/a/2)*2,crop=360:360:140:0',
           poster: true
         }]
       },

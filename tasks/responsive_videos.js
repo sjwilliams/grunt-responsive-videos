@@ -24,10 +24,12 @@ module.exports = function(grunt) {
         sizes: [{
             name: 'small',
             width: 320,
+            filter: '',
             poster: true
         },{
             name: 'large',
             width: 640,
+            filter: '',
             poster: true
         }
         ],
@@ -92,11 +94,11 @@ module.exports = function(grunt) {
     }
 
 
-    // Build filter graph flag, giiving preference to a custom
+    // Build filter graph flag, giving preference to a custom
     // filter. If none, construct the filter with the given width.
     // http://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction
     function getFilterGraphFlags(sizeObj) {
-        if (typeof sizeObj.filter === 'string') {
+        if (sizeObj.filter && typeof sizeObj.filter === 'string') {
             return sizeObj.filter;
         } else {
             return 'scale='+sizeObj.width+':trunc(ow/a/2)*2';
