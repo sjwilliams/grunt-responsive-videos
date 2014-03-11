@@ -271,7 +271,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 *0.1.1*
 
-* Enhancement [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/pull/7): Added the ability to pass custom filtergraphs and globally apply additional encode flags.
+* Enhancement [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/pull/7): Added the ability to pass custom filtergraphs and globally apply additional encode flags. Thanks to [@albertsun](https://github.com/albertsun).
 * Fixed: Test encoded media was no longer valid.
 
 *0.1.0*
@@ -280,7 +280,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 *0.0.4*
 
-* Enhancement [issue 3](https://github.com/sjwilliams/grunt-responsive-videos/issues/3): More robust poster options. Thanks to [@johncmckim](https://github.com/johncmckim)
+* Enhancement [issue 3](https://github.com/sjwilliams/grunt-responsive-videos/issues/3): More robust poster options. Thanks to [@johncmckim](https://github.com/johncmckim).
 * Enhancement: --debug logs
 * Fixed [issue 5](https://github.com/sjwilliams/grunt-responsive-videos/issues/5): Occasional zero byte h.246 encodes.
 * Fixed [issue 4](https://github.com/sjwilliams/grunt-responsive-videos/issues/4): Freezing on some task re-run. 
