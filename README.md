@@ -71,7 +71,7 @@ If a `name` is specified, then the file will be suffixed with this name. e.g. my
 
 If a `name` is not specified, then the file will be suffixed with the width. e.g. my-video-320.jpg
 
-'filter' is used when custom [filtergraphs](http://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction) are needed, like for cropping. The `width` propety will only be used for naming purpose if a `filter` is specified.
+`filter` is used when custom [filtergraphs](http://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction) are needed, like for cropping. The `width` propety will only be used for naming purpose if a `filter` is specified.
 
 If `poster` is true, create an image from the first frame of the video at this output size. e.g. my-video-320.jpg.
 
