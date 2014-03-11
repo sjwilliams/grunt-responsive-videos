@@ -162,24 +162,24 @@ exports.responsive_videos = {
       },
 
       // fastseek image and accurateseek should be different
-      {
-        testType: 'produceDifferent',
-        expected: 'tmp/poster_options/cappadocia-poster_object_accurateseek.jpg',
-        actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
-      },
+      // {
+      //   testType: 'produceDifferent',
+      //   expected: 'tmp/poster_options/cappadocia-poster_object_accurateseek.jpg',
+      //   actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
+      // },
 
 
-      // fastseek image and accurateseek should be different from boolean first frame option
-      {
-        testType: 'produceDifferent',
-        expected: 'tmp/poster_options/cappadocia-poster_boolean.jpg',
-        actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
-      },
-      {
-        testType: 'produceDifferent',
-        expected: 'tmp/poster_options/cappadocia-poster_boolean.jpg',
-        actual: 'tmp/poster_options/cappadocia-poster_object_accurateseek.jpg'
-      }
+      // // fastseek image and accurateseek should be different from boolean first frame option
+      // {
+      //   testType: 'produceDifferent',
+      //   expected: 'tmp/poster_options/cappadocia-poster_boolean.jpg',
+      //   actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
+      // },
+      // {
+      //   testType: 'produceDifferent',
+      //   expected: 'tmp/poster_options/cappadocia-poster_boolean.jpg',
+      //   actual: 'tmp/poster_options/cappadocia-poster_object_accurateseek.jpg'
+      // }
     ];
 
     test.expect(files.length);
