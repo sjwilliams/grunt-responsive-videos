@@ -161,6 +161,13 @@ exports.responsive_videos = {
         actual: 'tmp/poster_options/cappadocia-poster_object_fastseek.jpg'
       },
 
+
+      // These test are failing. I'd assumed different seeks would produce different files, and they did for a while.
+      // This change may be causing the issue:
+      // https://github.com/sjwilliams/grunt-responsive-videos/commit/9c6b6d94c6b91fda6526a4e5dec7f7744005434a#diff-61aa3af94eebf1771a56504d229d8234
+      // 
+      // Perhaps testing with bigger media and longer seeks will help, as the seeks will have more room to differ.
+
       // fastseek image and accurateseek should be different
       // {
       //   testType: 'produceDifferent',
