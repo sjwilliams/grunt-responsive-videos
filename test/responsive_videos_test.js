@@ -31,8 +31,7 @@ exports.responsive_videos = {
 
   // compare hashes of expected and actual encodes
   default_options: function(test) {
-    var actual,
-      expected;
+    var actual, expected;
 
     var files = [{
         filename: 'big_buck_bunny-small.jpg',
@@ -77,8 +76,7 @@ exports.responsive_videos = {
 
   // compare hashes of expected and actual encodes
   custom_options: function(test) {
-    var actual,
-      expected;
+    var actual, expected;
 
     var files = [{
         filename: 'big_buck_bunny-240.jpg',
@@ -113,10 +111,36 @@ exports.responsive_videos = {
     test.done();
   },
 
+
+  filter_options: function(test) {
+    var actual, expected;
+
+    var files = [{
+        filename: 'cappadocia-filtered.jpg',
+        expected: 'test/expected/filter_options/',
+        actual: 'tmp/filter_options/'
+      },
+      {
+        filename: 'cappadocia-filtered.mp4',
+        expected: 'test/expected/filter_options/',
+        actual: 'tmp/filter_options/'
+      }
+    ];
+
+    test.expect(files.length);
+
+    for (var i = 0, l = files.length; i < l; i++) {
+      actual = crypto.createHash('md5').update(grunt.file.read(files[i].actual + files[i].filename)).digest("hex");
+      expected = crypto.createHash('md5').update(grunt.file.read(files[i].expected + files[i].filename)).digest("hex");
+      test.equal(actual, expected, 'should be the same video for ' + files[i].filename);
+    }
+
+    test.done();
+  },
+
   // compare hashes of expected and actual encodes.
   poster_options: function(test) {
-    var actual,
-      expected;
+    var actual, expected;
 
     // just looking at the generated .jpgs, ignoring the generated videos
     var files = [

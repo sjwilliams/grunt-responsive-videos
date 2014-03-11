@@ -59,6 +59,32 @@ module.exports = function(grunt) {
           dest: 'tmp/custom_options/'
         }],
       },
+      filter_options: {
+        options: {
+          sizes:[{
+            width: 640,
+            name: 'filtered',
+            filter: 'scale=640:trunc(ow/a/2)*2,crop=360:360:140:0',
+            poster: true
+          }],
+          encodes:[{
+            mp4: [
+              {'-vcodec':'libx264'},
+              {'-acodec': 'libfaac'},
+              {'-pix_fmt': 'yuv420p'},
+              {'-q:v': '4'},
+              {'-q:a': '100'},
+              {'-threads': '0'}
+            ]
+          }]
+        },
+        files: [{
+          expand: true,
+          src: ['cappadocia.mp4'],
+          cwd: 'test/assets/',
+          dest: 'tmp/filter_options/'
+        }],
+      },
       poster_options: {
         options: {
           sizes: [{
