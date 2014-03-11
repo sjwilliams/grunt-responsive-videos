@@ -55,10 +55,12 @@ Default value:
 [{
   name: "small",
   width: 320,
+  filter: '',
   poster: true
 },{
   name: "large",
   width: 1024,
+  filter: '',
   poster: false
 }]
 ```
@@ -68,6 +70,8 @@ An array of objects containing the sizes we want to resize our video to.
 If a `name` is specified, then the file will be suffixed with this name. e.g. my-video-small.mp4
 
 If a `name` is not specified, then the file will be suffixed with the width. e.g. my-video-320.jpg
+
+`filter` is used when custom [filtergraphs](http://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction) are needed, like for cropping. The `width` propety will only be used for naming purpose if a `filter` is specified.
 
 If `poster` is true, create an image from the first frame of the video at this output size. e.g. my-video-320.jpg.
 
@@ -154,6 +158,34 @@ Default value: `-`
 
 The character used to separate the video filename from the size name.
 
+#### options.additionalFlags
+Type: `Array`
+
+Default value: 
+```js 
+[] 
+```
+
+An array of of objects, where the objects will be converted to flags passed into FFMpeg for all encodes. This is an easy way to globally add settings to the default encode settings, or to add settings to custom encodes without re-specifying duplicate settings per encode.
+
+
+In this example, two custom video sizes will be generated using the default encodes and settings, with the addition of `-g 3` flag passed to FFMpeg.
+
+```js
+options: {
+    sizes: [{
+        width: 640,
+        poster: true
+    },{
+        width: 320,
+        poster: true
+    }],
+    additionalFlags: [
+        {'-g': '3'}
+    ]
+}
+```
+
 ### Usage Examples
 
 #### Default Options
@@ -172,8 +204,9 @@ grunt.initConfig({
 })
 ```
 
-#### Custom Options
-In this example, we specify custom sizes and a source path. We'll only generate .webm files and poster images, and we'll not using custom naming, falling back to -320.web names instead of -small.webm, etc.
+#### Custom Option Examples
+##### Customized encode and size settings
+In this example, we specify custom sizes and a source path. We'll only generate .webm files and poster images at 320px wide, and we'll not using custom naming, falling back to -320.web names instead of -small.webm, etc.
 
 ```js
 grunt.initConfig({
@@ -204,6 +237,31 @@ grunt.initConfig({
   },
 })
 ```
+##### Custom size with filter
+In this example, we specify a custom filtergraph to crop the video to a square.
+```js
+grunt.initConfig({
+  responsive_videos: {
+    myTask: {
+      options: {
+        sizes: [{
+          width: 360,
+          filter: 'scale=640:trunc(ow/a/2)*2,crop=360:360:140:0',
+          poster: true
+        }]
+      },
+      files: [{
+        expand: true,
+        src: ['*.{mov,mp4}'],
+        cwd: srcVideos,
+        dest: tmpFolder
+      }]
+    }
+  },
+})
+```
+
+
 ## Known Issues
 - Generated .webm files in unit tests are returning different checksums on every run, making reliable test impossible. ffmpeg settings issue?
 

@@ -24,10 +24,12 @@ module.exports = function(grunt) {
         sizes: [{
             name: 'small',
             width: 320,
+            filter: '',
             poster: true
         },{
             name: 'large',
             width: 640,
+            filter: '',
             poster: true
         }
         ],
@@ -52,7 +54,8 @@ module.exports = function(grunt) {
                 {'-q:a': '100'},
                 {'-threads': '0'}
             ]
-        }]
+        }],
+        additionalFlags:[]
     };
 
 
@@ -91,32 +94,17 @@ module.exports = function(grunt) {
         }
     }
 
-    // determine which type of poster to create for
-    // the given video size and related options.
-    //
-    // Based on:
-    // https://github.com/sjwilliams/grunt-responsive-videos/issues/3#issuecomment-31206990
-    //
-    // The default will be to use the first frame, but also options to 'fastseek'
-    // and 'accurateseek' to a specific portion of the video
-    function buildPosterFlags(size) {
-        var posterBuilderOptions = {
-            'boolean': function(){
-                console.log('boolean');
-            },
-            'string': function(){
-                console.log('string');
-            },
-            'object': function(){
-                console.log('object');
-            }
-        };
 
-        var posterConfigType = typeof size.poster;
-        console.log(posterConfigType);
-
+    // Build filter graph flag, giving preference to a custom
+    // filter. If none, construct the filter with the given width.
+    // http://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction
+    function getFilterGraphFlags(sizeObj) {
+        if (sizeObj.filter && typeof sizeObj.filter === 'string') {
+            return sizeObj.filter;
+        } else {
+            return 'scale='+sizeObj.width+':trunc(ow/a/2)*2';
+        }
     }
-
 
     grunt.registerMultiTask('responsive_videos', 'Videos at various responsive sizes', function() {
         var that = this;
@@ -208,7 +196,7 @@ module.exports = function(grunt) {
                         }
 
                         flags.push('-vframes', '1'); //grab only one frame
-                        flags.push('-vf', 'scale='+size.width+':-1');
+                        flags.push('-vf', getFilterGraphFlags(size));
                         flags.push(posterPath);
                         grunt.log.debug('ffmpeg ' + flags.join(' '));
                         ffmpeg.exec(flags, function() {
@@ -236,15 +224,22 @@ module.exports = function(grunt) {
                         // input file first
                         flags.push('-i', srcPath);
 
-                        // encode settings next
+                        // given settings for this encode
                         _.each(codecSettings, function(codecSetting){
                             for (var key in codecSetting){
                                 flags.push(key,codecSetting[key]);
                             }
                         });
 
-                        // set size
-                        flags.push('-vf', 'scale='+size.width+':trunc(ow/a/2)*2');
+                        // global, encode-independent settings
+                        _.each(options.additionalFlags, function(flag){
+                            for (var key in flag){
+                                flags.push(key,flag[key]);
+                            }
+                        });
+
+                        // set size with given width or custom filtergraph
+                        flags.push('-vf', getFilterGraphFlags(size));
 
                         // output file
                         flags.push(outPath);
