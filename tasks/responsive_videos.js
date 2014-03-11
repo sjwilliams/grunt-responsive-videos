@@ -91,30 +91,16 @@ module.exports = function(grunt) {
         }
     }
 
-    // determine which type of poster to create for
-    // the given video size and related options.
-    //
-    // Based on:
-    // https://github.com/sjwilliams/grunt-responsive-videos/issues/3#issuecomment-31206990
-    //
-    // The default will be to use the first frame, but also options to 'fastseek'
-    // and 'accurateseek' to a specific portion of the video
-    function buildPosterFlags(size) {
-        var posterBuilderOptions = {
-            'boolean': function(){
-                console.log('boolean');
-            },
-            'string': function(){
-                console.log('string');
-            },
-            'object': function(){
-                console.log('object');
-            }
-        };
 
-        var posterConfigType = typeof size.poster;
-        console.log(posterConfigType);
-
+    // Build filter graph flag, giiving preference to a custom
+    // filter. If none, construct the filter with the given width.
+    // http://ffmpeg.org/ffmpeg-filters.html#Filtering-Introduction
+    function getFilterGraphFlags(sizeObj) {
+        if (typeof sizeObj.filter === 'string') {
+            return sizeObj.filter;
+        } else {
+            return 'scale='+sizeObj.width+':trunc(ow/a/2)*2';
+        }
     }
 
 
@@ -208,11 +194,7 @@ module.exports = function(grunt) {
                         }
 
                         flags.push('-vframes', '1'); //grab only one frame
-                        if (size.custom_ffmpeg_filtergraph) {
-                            flags.push('-vf', size.custom_ffmpeg_filtergraph);
-                        } else {
-                            flags.push('-vf', 'scale='+size.width+':-1');
-                        }
+                        flags.push('-vf', getFilterGraphFlags(size));
                         flags.push(posterPath);
                         grunt.log.debug('ffmpeg ' + flags.join(' '));
                         ffmpeg.exec(flags, function() {
@@ -247,17 +229,8 @@ module.exports = function(grunt) {
                             }
                         });
 
-                        // set size
-                        if (size.custom_ffmpeg_filtergraph) {
-                            flags.push('-vf', size.custom_ffmpeg_filtergraph);
-                        } else {
-                            flags.push('-vf', 'scale='+size.width+':trunc(ow/a/2)*2');    
-                        }
-
-                        // set other options
-                        if (size.custom_ffmpeg_options instanceof Array) {
-                            flags = flags.concat(size.custom_ffmpeg_options);
-                        }
+                        // set size with given width or custom filtergraph
+                        flags.push('-vf', getFilterGraphFlags(size));
 
                         // output file
                         flags.push(outPath);
