@@ -11,7 +11,7 @@ If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out th
 npm install grunt-responsive-videos --save-dev
 ```
 
-Additionally, this plugin requries ffmpeg with libx264 and libvpx to encode .mp4 and .webm, which are common HTML5 codecs, and required for the unit tests.
+Additionally, this plugin requries FFMpeg with libx264 and libvpx to encode .mp4 and .webm, which are common HTML5 codecs, and required for the unit tests.
 ```shell
 brew install ffmpeg --with-libvorbis --with-nonfree --with-gpl --with-libvpx --with-pthreads --with-libx264 --with-libfaac --with-theora --with-libogg
 ```
@@ -142,7 +142,7 @@ Default value:
   }]
 ```
 
-An array of objects containing the codecs you'd like to produce. The keys are used as the extension, and the array of objects will be converted to flags passed into ffmpeg.
+An array of objects containing the codecs you'd like to produce. The keys are used as the extension, and the array of objects will be converted to flags passed into FFMpeg.
 
 The above are the defaults for an encode job and should give reasonable results for HTML5 video.
 
@@ -263,7 +263,7 @@ grunt.initConfig({
 
 
 ## Known Issues
-- Generated .webm files in unit tests are returning different checksums on every run, making reliable test impossible. ffmpeg settings issue?
+- Generated .webm files in unit tests are returning different checksums on every run, making reliable test impossible. FFMpeg settings issue?
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
