@@ -269,6 +269,10 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+*0.1.2*
+
+* Enhancement [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/issues/11): NPM ignores the massive test videos.
+
 *0.1.1*
 
 * Enhancement [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/pull/7): Added the ability to pass custom filtergraphs and globally apply additional encode flags. Thanks to [@albertsun](https://github.com/albertsun).
