@@ -271,7 +271,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 *0.1.2*
 
-* Enhancement [issue 7](https://github.com/sjwilliams/grunt-responsive-videos/issues/11): NPM ignores the massive test videos.
+* Enhancement [issue 11](https://github.com/sjwilliams/grunt-responsive-videos/issues/11): NPM ignores the massive test videos.
 
 *0.1.1*
 
