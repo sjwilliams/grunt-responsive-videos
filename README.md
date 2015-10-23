@@ -269,6 +269,10 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+*0.1.3*
+
+* Bug Fix [issue 12](https://github.com/sjwilliams/grunt-responsive-videos/issues/12): ffmpeg-node missing from NPM.
+
 *0.1.2*
 
 * Enhancement [issue 11](https://github.com/sjwilliams/grunt-responsive-videos/issues/11): NPM ignores the massive test videos.
