@@ -135,8 +135,8 @@ module.exports = function(grunt) {
 
             // build encode settings for each input file
             that.files.forEach(function(f) {
-                var extName = path.extname(f.dest),
-                    srcPath = f.src[0],
+                var srcPath = f.src[0],
+                    extName = path.extname(srcPath),
                     baseName = path.basename(srcPath, extName), // filename without extension
                     dirName = path.dirname(f.dest),
                     dstPath = path.join(dirName, baseName + size.name),
