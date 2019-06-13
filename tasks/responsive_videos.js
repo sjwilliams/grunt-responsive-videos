@@ -254,8 +254,12 @@ module.exports = function(grunt) {
                         // queue encode jobs
                         series.push(function(callback){
                             grunt.log.debug('ffmpeg ' + flags.join(' '));
-                            ffmpeg.exec(flags, function() {
-                                grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
+                            ffmpeg.exec(flags, function(stderr, stdout, code) {
+                                if (code === 0) {
+                                    grunt.verbose.ok('Responsive Video: ' + srcPath + ' now ' + outPath);
+                                } else {
+                                    grunt.fail.warn('An ffmpeg error occurred: ' + stderr);
+                                }
                                 return callback();
                             });
                         });
