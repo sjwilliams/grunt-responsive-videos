@@ -227,14 +227,20 @@ module.exports = function(grunt) {
                         // given settings for this encode
                         _.each(codecSettings, function(codecSetting){
                             for (var key in codecSetting){
-                                flags.push(key,codecSetting[key]);
+                                if (codecSetting[key] == '')
+                                    flags.push(key);
+                                else
+                                    flags.push(key,codecSetting[key]);
                             }
                         });
 
                         // global, encode-independent settings
                         _.each(options.additionalFlags, function(flag){
                             for (var key in flag){
-                                flags.push(key,flag[key]);
+                                if (flags[key] == '')
+                                    flags.push(key);
+                                else
+                                    flags.push(key,flag[key]);
                             }
                         });
 
