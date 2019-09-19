@@ -234,7 +234,8 @@ module.exports = function(grunt) {
                         // global, encode-independent settings
                         _.each(options.additionalFlags, function(flag){
                             for (var key in flag){
-                                flags.push(key,flag[key]);
+                                if(typeof flag === "string") flags.push(flag);
+                                else flags.push(key,flag[key]);
                             }
                         });
 
